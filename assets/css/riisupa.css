@@ -133,6 +133,10 @@ button, select, input, textarea {
    Header
    ----------------------------------------------------------------------- */
 
+/* El header se inserta dentro de <div data-slot="header">; sin esto, ese
+   div limita el "sticky" y el header se va con el scroll. */
+[data-slot="header"] { display: contents; }
+
 .site-header {
   position: sticky;
   top: 0;
@@ -1122,6 +1126,8 @@ button, select, input, textarea {
   transition: border-color 180ms ease;
   align-items: start;
 }
+
+.evento-card { scroll-margin-top: 5rem; }
 
 .evento-card:hover {
   border-color: var(--primary-400);

@@ -28,6 +28,11 @@
       scroll-margin-top: 5rem;
     }
 
+    /* En escritorio los filtros quedan fijos debajo del header */
+    @media (min-width: 768px) {
+      .uni-card { scroll-margin-top: 12rem; }
+    }
+
     .uni-card .card-tags { margin-top: 0.5rem; }
 
     .uni-sedes-label { margin-top: 1.25rem; }
