@@ -1,115 +1,80 @@
 # RIISUPA — Sitio institucional
 
-Sitio web institucional de la **Red de Investigación e Innovación en Salud de Universidades de gestión Privada de Argentina**. HTML5 estático, sin dependencias de build.
+Sitio web institucional de la **Red de Investigación e Innovación en Salud de Universidades de Gestión Privada de Argentina**. HTML5 estático, sin dependencias de build.
 
-Versión aprobada por la Comisión de Comunicación (reunión 24/8/2026).
+En esta etapa el sitio funciona como **portal de visibilidad**: información general de la Red, nodos temáticos, autoridades, integrantes, universidades con sus sedes y agenda de actividades.
 
 ## Inventario
 
-**8 páginas HTML**, 1 CSS, 2 JS, 1 favicon, 1 robots, 1 sitemap. ~230 KB total.
-
 ```
-riisupa-html/
-├── index.html                     Portada con: acceso al reglamento, líneas de
-│                                  investigación, proyectos colaborativos (con
-│                                  coordinadora + contacto + fecha), efemérides e
-│                                  iniciativas institucionales, eventos de la Red.
-├── la_red.html                    Estructura institucional: autoridades (Comité
-│                                  Ejecutivo), Asamblea de miembros (18 universidades
-│                                  en tabla) y un único canal de contacto:
-│                                  rediisupa@gmail.com + LinkedIn de la Red.
-├── universidades.html             Listado de las 18 universidades miembro con
-│                                  filtros por provincia, línea y búsqueda.
-├── proyectos.html                 Catálogo de proyectos colaborativos con
-│                                  universidad coordinadora, contacto, fecha de
-│                                  inicio y filtros por línea, tipo, estado, FHIR R4.
-├── lineas_investigacion.html      Detalle por línea con proyectos asociados.
-├── convocatorias.html             Convocatorias abiertas y cerradas.
-├── eventos.html                   Agenda de actividades: webinars, jornadas,
-│                                  talleres, asambleas, efemérides e iniciativas
-│                                  institucionales.
-├── reglamento.html                Texto completo del reglamento con navegación
-│                                  lateral y anchors por artículo.
-├── robots.txt                     Indicador para buscadores.
-├── sitemap.xml                    Sitemap para indexación.
-├── favicon.svg                    Monograma "R" en azul institucional.
+riisupa/
+├── index.html            Portada: presentación, nodos temáticos, calendario
+│                         compartido (efemérides e iniciativas institucionales)
+│                         y agenda (próximos eventos de la Red).
+├── la_red.html           Quiénes somos, estructura institucional, Comité
+│                         Ejecutivo, Asamblea de Miembros (todos los integrantes,
+│                         agrupados por universidad) y contacto oficial.
+├── universidades.html    Las 20 universidades miembro con sus sedes por
+│                         provincia, filtros y presencia federal.
+├── eventos.html          Actividades: próximas y archivo.
+├── reglamento.html       Texto completo del reglamento, con índice y anchors
+│                         por artículo.
+├── robots.txt · sitemap.xml · favicon.svg
 └── assets/
-    ├── css/riisupa.css            Todo el estilo: paleta, tipografía, componentes.
+    ├── css/riisupa.css   Todo el estilo: paleta, tipografía, componentes.
+    ├── img/              Logo e isotipo de la Red (PNG con fondo transparente).
     └── js/
-        ├── data.js                FUENTE ÚNICA DE VERDAD del contenido +
-        │                          constantes de contacto oficial y LinkedIn.
-        └── riisupa.js             Header, footer, filtros, formato de fechas.
+        ├── data.js       FUENTE ÚNICA DEL CONTENIDO.
+        └── riisupa.js    Header, footer, filtros y formato de fechas.
 ```
 
-## Cambios aplicados según Comisión de Comunicación (24/8/2026)
-
-### En la home (`index.html`)
-Se removieron: universidades destacadas, proyectos destacados, blog, oportunidades, "sumate" (CTA de adhesión), canales abiertos GitHub, distribución geográfica, "cómo postular", proponer un evento, sección Transparencia.
-
-Se dejaron sólo: acceso al reglamento, líneas de investigación, proyectos colaborativos (con universidad **coordinadora** — no "líder" — contacto de investigación y fecha de inicio), calendario de efemérides + iniciativas institucionales, eventos de la Red.
-
-### En el menú principal
-Se removieron: Blog y Reglamento (Reglamento sigue accesible desde el CTA principal, el footer y links contextuales).
-
-Menú vigente: **Inicio · La Red · Universidades · Proyectos · Líneas · Convocatorias · Actividades**
-
-### Contacto y redes
-Se unificó todo en **un único canal**:
-- Email: `rediisupa@gmail.com`
-- LinkedIn: RIISUPA en LinkedIn (link al perfil oficial)
-
-Se eliminaron las 6 casillas rol-específicas (`contacto@`, `comite@`, `proyectos@`, etc.).
-
-### Archivos eliminados
-- `blog.html`
-- `investigadores.html`
-
-Sus datos siguen en `data.js` por si a futuro se restablece alguno.
+Menú: **Inicio · La Red · Universidades · Actividades**. El reglamento se accede desde "La Red", el pie de página y los links de cada página.
 
 ## Cómo editar el contenido
 
-**99% del contenido vive en `assets/js/data.js`.** Un único archivo con estos arrays:
+**Casi todo el contenido vive en `assets/js/data.js`**, organizado en listas:
 
-| Array | Contenido actual |
-| --- | --- |
-| `RIISUPA.contacto` | Email + LinkedIn oficial |
-| `RIISUPA.lineas` | 6 líneas de investigación |
-| `RIISUPA.universidades` | 18 universidades miembro |
-| `RIISUPA.investigadores` | 8 investigadores (referenciados por proyectos y posts) |
-| `RIISUPA.proyectos` | 7 proyectos con `universidadCoordinadora` |
-| `RIISUPA.eventos` | 10 actividades (webinars, jornadas, efemérides, iniciativas) |
-| `RIISUPA.convocatorias` | 8 convocatorias |
+| Lista | Contenido | Dónde se ve |
+| --- | --- | --- |
+| `RIISUPA.contacto` | Email y LinkedIn oficiales | Pie de página, "La Red" |
+| `RIISUPA.nodos` | 7 nodos temáticos | Portada |
+| `RIISUPA.comiteEjecutivo` | Presidente, Vicepresidente y Secretario, con universidad y período | "La Red" |
+| `RIISUPA.universidades` | 20 universidades: nombre, sigla, sitio web y sedes (provincias) | "Universidades", "La Red" |
+| `RIISUPA.integrantes` | 28 integrantes de la Asamblea: nombre, cargo y universidad | "La Red" |
+| `RIISUPA.provincias` | Orden en que se listan las provincias | "Universidades" |
+| `RIISUPA.eventos` | Actividades (vacía por ahora; tiene una plantilla comentada) | Portada, "Actividades" |
 
-Al editar cualquier objeto, todas las páginas se actualizan automáticamente.
+Al editar `data.js`, todas las páginas se actualizan solas. Algunas reglas:
 
-## Publicar en GitHub Pages
+- Cada integrante se vincula a su universidad con el `id` de la universidad (por ejemplo `universidad: 'usal'`).
+- Las sedes se escriben con los mismos nombres de la lista `provincias` (por ejemplo `'Pcia. de Buenos Aires'`, `'CABA'`).
+- Si un texto lleva apóstrofo (D'Angelo), va entre comillas dobles: `"Silvia D'Angelo"`.
+- Las actividades de tipo `efemeride` o `iniciativa-institucional` aparecen en "Calendario compartido"; el resto, en "Próximos eventos de la Red". Cuando pasa la fecha, se mueven solas al archivo.
 
-El paquete está pensado para el repo `riisupa/riisupa.github.io` (que GitHub Pages sirve directamente en la raíz).
+Origen de los datos actuales: planilla *Integrantes_Red_RIISUPA_oct.2026.xlsx* (solapas "Miembros web" y "Sedes") y documento *Web de RIISUPA*.
 
-Descomprimir el ZIP e inicializar el repo:
+## Cambios de la versión de noviembre 2026
 
-```bash
-cd riisupa.github.io/
-git init
-git branch -M main
-git remote add origin https://github.com/riisupa/riisupa.github.io.git
-git add .
-git commit -m "feat: sitio institucional inicial de RIISUPA"
-git push -u origin main
-```
+- **Portada**: se quitó "Iniciativa CRUP 2026"; nuevo texto de presentación; las líneas de investigación pasan a ser los **7 nodos temáticos** (solo el nombre); se quitó la sección de proyectos.
+- **La Red**: nuevo texto institucional; se quitaron las tarjetas de los artículos 5, 6 y 12; Comité Ejecutivo con las autoridades vigentes (período 2025-2027); la Asamblea muestra a **todos los integrantes sin distinción titular/suplente**, con cargo y universidad.
+- **Universidades**: 20 universidades (se sumaron Universidad de la Cuenca del Plata y Universidad ISALUD) con **sedes por provincia**.
+- **Contenido de ejemplo eliminado**: proyectos, investigadores, blog, convocatorias, eventos y descripciones de universidades que eran de muestra.
+- **Páginas eliminadas**: `proyectos.html`, `lineas_investigacion.html`, `convocatorias.html`, `blog.html`, `investigadores.html`, `mock_index.html` y la copia vieja de `js/`. Quedan en el historial de git si se quieren recuperar.
+- **Reglamento**: se quitaron dos recuadros y un botón que describían trámites por GitHub que no forman parte del reglamento. El texto de los artículos no se modificó.
+- **Fechas**: las fechas cargadas solo con día ya no se muestran corridas al día anterior.
+- **Logo** de la Red en el encabezado y el pie.
 
-En **Settings → Pages** verificar que "Source" esté como "Deploy from a branch", branch `main`, folder `/ (root)`.
+## Publicación
 
-Sitio disponible en `https://riisupa.github.io/` en 1-2 minutos.
+El sitio es estático: cualquier hosting de archivos sirve (GitHub Pages, Netlify, el servidor de una universidad, etc.). `sitemap.xml` y `robots.txt` apuntan hoy a `https://riisupa.github.io/`; si el dominio final es otro, hay que actualizar esas dos URLs.
+
+Para GitHub Pages: en **Settings → Pages**, "Deploy from a branch", branch `main`, carpeta `/ (root)`.
 
 ## Decisiones editoriales vigentes
 
-- **Autoridades del Comité Ejecutivo**: "A designar" hasta la Asamblea fundacional.
-- **Representantes de Asamblea**: placeholders genéricos que cada universidad debe reemplazar.
 - **Contacto único**: `rediisupa@gmail.com` + LinkedIn (aprobado por Comisión de Comunicación).
+- **Integrantes**: se muestran nombre, cargo y universidad; no se publican correos personales.
 - **Comisiones ad hoc**: no se muestran activas.
-- **Convocatorias**: se mantiene la página, se va a alimentar con información.
-- **FHIR R4**: diferenciador técnico visible con badge en proyectos que lo usan.
 
 ## Licencia
 
