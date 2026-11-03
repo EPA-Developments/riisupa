@@ -1,6 +1,6 @@
 /* -----------------------------------------------------------------------
    RIISUPA — JS compartido
-   Inserta header, footer y expone utilidades de render.
+   Inserta header, footer y expone utilidades de render y de fechas.
    ----------------------------------------------------------------------- */
 
 (function () {
@@ -10,22 +10,29 @@
     { href: 'index.html', label: 'Inicio', key: 'inicio' },
     { href: 'la_red.html', label: 'La Red', key: 'la-red' },
     { href: 'universidades.html', label: 'Universidades', key: 'universidades' },
-    { href: 'proyectos.html', label: 'Proyectos', key: 'proyectos' },
-    { href: 'lineas_investigacion.html', label: 'Líneas', key: 'lineas' },
-    { href: 'convocatorias.html', label: 'Convocatorias', key: 'convocatorias' },
     { href: 'eventos.html', label: 'Actividades', key: 'eventos' },
   ];
 
+  const NOMBRE_COMPLETO = 'Red de Investigación e Innovación en Salud de Universidades de Gestión Privada de Argentina';
+
+  function brand() {
+    return `
+      <img class="brand-mark" src="assets/img/riisupa-isotipo.png" alt="" width="80" height="155" />
+      <span class="brand-text">
+        <span class="brand-name">RIISUPA</span>
+        <span class="brand-tagline">Red de Investigación e Innovación en Salud</span>
+      </span>
+    `;
+  }
+
   function renderHeader(activeKey) {
     const navItems = NAV.map((item) => {
-      const isActive = item.key === activeKey;
-      const aria = isActive ? ' aria-current="page"' : '';
+      const aria = item.key === activeKey ? ' aria-current="page"' : '';
       return `<li><a href="${item.href}"${aria}>${item.label}</a></li>`;
     }).join('');
 
     const navItemsTop = NAV.map((item) => {
-      const isActive = item.key === activeKey;
-      const aria = isActive ? ' aria-current="page"' : '';
+      const aria = item.key === activeKey ? ' aria-current="page"' : '';
       return `<a href="${item.href}"${aria}>${item.label}</a>`;
     }).join('');
 
@@ -33,11 +40,7 @@
       <header class="site-header">
         <div class="header-inner">
           <a href="index.html" class="brand" aria-label="RIISUPA · Inicio">
-            <span class="brand-mark" aria-hidden="true">R</span>
-            <span class="brand-text">
-              <span class="brand-name">RIISUPA</span>
-              <span class="brand-tagline">Red de Investigación e Innovación en Salud</span>
-            </span>
+            ${brand()}
           </a>
 
           <nav class="main-nav" aria-label="Navegación principal">
@@ -45,8 +48,7 @@
           </nav>
 
           <div class="header-actions">
-            <a href="${window.RIISUPA.contacto.linkedin}" target="_blank" rel="noopener"
-               style="font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-500); text-decoration: none;">
+            <a href="${window.RIISUPA.contacto.linkedin}" target="_blank" rel="noopener" class="header-link">
               LinkedIn ↗
             </a>
           </div>
@@ -67,28 +69,21 @@
 
   function renderFooter() {
     const year = new Date().getFullYear();
+    const { email, linkedin } = window.RIISUPA.contacto;
     return `
       <footer class="site-footer">
         <div class="container">
           <div class="footer-grid">
             <div>
               <div class="brand" style="cursor: default;">
-                <span class="brand-mark" aria-hidden="true">R</span>
-                <span class="brand-text">
-                  <span class="brand-name">RIISUPA</span>
-                  <span class="brand-tagline">Red de Investigación e Innovación en Salud</span>
-                </span>
+                ${brand()}
               </div>
               <p class="footer-tagline">
-                Universidades de gestión privada de Argentina colaborando para generar evidencia científica y soluciones con impacto en el sistema de salud.
+                Una iniciativa conjunta impulsada por universidades de gestión privada de Argentina, orientada al fortalecimiento de la investigación y la innovación en salud.
               </p>
-              <div style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.625rem;">
-                <a href="mailto:${window.RIISUPA.contacto.email}" style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink-700); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                  <span aria-hidden="true">✉</span> ${window.RIISUPA.contacto.email}
-                </a>
-                <a href="${window.RIISUPA.contacto.linkedin}" target="_blank" rel="noopener" style="font-family: var(--font-mono); font-size: 0.8125rem; color: var(--ink-700); text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem;">
-                  <span aria-hidden="true">in</span> LinkedIn de la Red ↗
-                </a>
+              <div class="footer-contacto">
+                <a href="mailto:${email}"><span aria-hidden="true">✉</span> ${email}</a>
+                <a href="${linkedin}" target="_blank" rel="noopener"><span aria-hidden="true">in</span> LinkedIn de la Red ↗</a>
               </div>
             </div>
 
@@ -96,29 +91,29 @@
               <div class="footer-col">
                 <h3>La Red</h3>
                 <ul>
-                  <li><a href="la_red.html">Estructura institucional</a></li>
-                  <li><a href="la_red.html#comite">Autoridades</a></li>
-                  <li><a href="la_red.html#asamblea">Asamblea de miembros</a></li>
-                  <li><a href="universidades.html">Universidades miembro</a></li>
+                  <li><a href="la_red.html">Quiénes somos</a></li>
+                  <li><a href="la_red.html#comite">Comité Ejecutivo</a></li>
+                  <li><a href="la_red.html#asamblea">Asamblea de Miembros</a></li>
+                  <li><a href="reglamento.html">Reglamento</a></li>
                 </ul>
               </div>
               <div class="footer-col">
-                <h3>Investigación</h3>
+                <h3>Explorar</h3>
                 <ul>
-                  <li><a href="proyectos.html">Proyectos</a></li>
-                  <li><a href="lineas_investigacion.html">Líneas</a></li>
-                  <li><a href="convocatorias.html">Convocatorias</a></li>
+                  <li><a href="universidades.html">Universidades miembro</a></li>
+                  <li><a href="index.html#nodos">Nodos temáticos</a></li>
                   <li><a href="eventos.html">Actividades</a></li>
+                  <li><a href="la_red.html#contacto">Contacto</a></li>
                 </ul>
               </div>
             </div>
           </div>
 
           <div class="footer-bottom">
-            <p>© ${year} RIISUPA · Asociación voluntaria sin fines de lucro</p>
+            <p>© ${year} RIISUPA · ${NOMBRE_COMPLETO}</p>
             <div class="footer-links">
-              <a href="mailto:${window.RIISUPA.contacto.email}">Contacto</a>
-              <a href="${window.RIISUPA.contacto.linkedin}" target="_blank" rel="noopener">LinkedIn ↗</a>
+              <a href="mailto:${email}">Contacto</a>
+              <a href="${linkedin}" target="_blank" rel="noopener">LinkedIn ↗</a>
             </div>
           </div>
         </div>
@@ -138,8 +133,19 @@
       toggle.addEventListener('click', () => {
         const isOpen = mobile.classList.toggle('is-open');
         toggle.setAttribute('aria-expanded', String(isOpen));
+        toggle.setAttribute('aria-label', isOpen ? 'Cerrar menú' : 'Abrir menú');
       });
     }
+  }
+
+  /* Desplaza hasta el ancla de la URL una vez renderizado el contenido. */
+  function scrollToHash() {
+    if (!window.location.hash) return;
+    setTimeout(() => {
+      let target = null;
+      try { target = document.querySelector(decodeURIComponent(window.location.hash)); } catch (e) { /* hash inválido */ }
+      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
   }
 
   /* -----------------------------------------------------------------------
@@ -161,9 +167,7 @@
         ? filtrados.map(config.render).join('')
         : `<div class="empty-state" style="grid-column: 1 / -1;"><p>No hay resultados para los filtros seleccionados.</p></div>`;
       if (metaEl) {
-        const total = config.datos.length;
-        const visibles = filtrados.length;
-        metaEl.innerHTML = `<strong>${visibles}</strong> de ${total} ${config.etiquetaResultado}`;
+        metaEl.innerHTML = `<strong>${filtrados.length}</strong> de ${config.datos.length} ${config.etiquetaResultado}`;
       }
     }
 
@@ -177,53 +181,78 @@
     aplicar();
   }
 
-  /* Expuesto global */
-  window.RIISUPA_UI = {
-    mount,
-    initFiltros,
-    formatoFechaLarga,
-    formatoFechaCorta,
-    formatoFechaHora,
-    diasHasta,
-  };
-
   /* -----------------------------------------------------------------------
-     Formato de fechas (es-AR, zona Buenos Aires)
+     Fechas (es-AR, zona Buenos Aires)
+
+     Las fechas de data.js pueden venir con hora ('2026-12-10T15:00:00-03:00')
+     o solo con día ('2026-12-10'). Las de solo día se interpretan como día
+     de Argentina (antes se corrían al día anterior por la zona horaria).
      ----------------------------------------------------------------------- */
 
-  function formatoFechaLarga(fecha) {
-    const f = new Date(fecha);
-    return new Intl.DateTimeFormat('es-AR', {
-      day: 'numeric', month: 'long', year: 'numeric',
-      timeZone: 'America/Argentina/Buenos_Aires',
-    }).format(f);
+  const TZ = 'America/Argentina/Buenos_Aires';
+  const SOLO_DIA = /^\d{4}-\d{2}-\d{2}$/;
+
+  function esSoloDia(fecha) {
+    return typeof fecha === 'string' && SOLO_DIA.test(fecha);
   }
 
-  function formatoFechaCorta(fecha) {
-    const f = new Date(fecha);
-    return new Intl.DateTimeFormat('es-AR', {
-      day: '2-digit', month: '2-digit', year: 'numeric',
-      timeZone: 'America/Argentina/Buenos_Aires',
-    }).format(f);
+  function parseFecha(fecha) {
+    if (fecha instanceof Date) return fecha;
+    return esSoloDia(fecha) ? new Date(fecha + 'T12:00:00-03:00') : new Date(fecha);
+  }
+
+  function formatear(fecha, opciones) {
+    return new Intl.DateTimeFormat('es-AR', { timeZone: TZ, ...opciones }).format(parseFecha(fecha));
+  }
+
+  function formatoFechaLarga(fecha) {
+    return formatear(fecha, { day: 'numeric', month: 'long', year: 'numeric' });
   }
 
   function formatoFechaHora(fecha) {
-    const f = new Date(fecha);
-    const dia = new Intl.DateTimeFormat('es-AR', {
-      day: 'numeric', month: 'long', year: 'numeric',
-      timeZone: 'America/Argentina/Buenos_Aires',
-    }).format(f);
-    const hora = new Intl.DateTimeFormat('es-AR', {
-      hour: '2-digit', minute: '2-digit', hour12: false,
-      timeZone: 'America/Argentina/Buenos_Aires',
-    }).format(f);
-    return dia + ' · ' + hora + ' hs';
+    const dia = formatoFechaLarga(fecha);
+    if (esSoloDia(fecha)) return dia;
+    return dia + ' · ' + formatear(fecha, { hour: '2-digit', minute: '2-digit', hour12: false }) + ' hs';
+  }
+
+  /* Día, mes abreviado y año, todos calculados en hora de Argentina. */
+  function partesFecha(fecha) {
+    return {
+      dia: formatear(fecha, { day: 'numeric' }),
+      mes: formatear(fecha, { month: 'short' }).replace('.', ''),
+      anio: formatear(fecha, { year: 'numeric' }),
+    };
+  }
+
+  /* Momento en que termina una actividad (para saber si ya pasó). */
+  function finEvento(e) {
+    if (e.fechaFin) return esSoloDia(e.fechaFin) ? new Date(e.fechaFin + 'T23:59:59-03:00') : new Date(e.fechaFin);
+    if (esSoloDia(e.fechaInicio)) return new Date(e.fechaInicio + 'T23:59:59-03:00');
+    return new Date(parseFecha(e.fechaInicio).getTime() + (e.duracionMinutos || 0) * 60000);
+  }
+
+  function esProximo(e, ahora) {
+    return finEvento(e) >= (ahora || new Date()) && e.estado !== 'finalizado' && e.estado !== 'cancelado';
   }
 
   function diasHasta(fecha) {
-    const ahora = new Date();
-    const f = new Date(fecha);
-    const diffMs = f - ahora;
-    return Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+    const hoy = formatear(new Date(), { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const dia = formatear(fecha, { year: 'numeric', month: '2-digit', day: '2-digit' });
+    const aUTC = (s) => { const [d, m, a] = s.split('/').map(Number); return Date.UTC(a, m - 1, d); };
+    return Math.round((aUTC(dia) - aUTC(hoy)) / 86400000);
   }
+
+  /* Expuesto global */
+  window.RIISUPA_UI = {
+    mount,
+    scrollToHash,
+    initFiltros,
+    parseFecha,
+    formatoFechaLarga,
+    formatoFechaHora,
+    partesFecha,
+    finEvento,
+    esProximo,
+    diasHasta,
+  };
 })();
