@@ -94,7 +94,6 @@
                   <li><a href="la_red.html">Quiénes somos</a></li>
                   <li><a href="la_red.html#comite">Comité Ejecutivo</a></li>
                   <li><a href="la_red.html#asamblea">Asamblea de Miembros</a></li>
-                  <li><a href="reglamento.html">Reglamento</a></li>
                 </ul>
               </div>
               <div class="footer-col">

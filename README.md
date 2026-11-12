@@ -17,8 +17,6 @@ riisupa/
 ├── universidades.html    Las 20 universidades miembro con sus sedes por
 │                         provincia, filtros y presencia federal.
 ├── eventos.html          Actividades: próximas y archivo.
-├── reglamento.html       Texto completo del reglamento, con índice y anchors
-│                         por artículo.
 ├── robots.txt · sitemap.xml · favicon.svg
 └── assets/
     ├── css/riisupa.css   Todo el estilo: paleta, tipografía, componentes.
@@ -28,7 +26,9 @@ riisupa/
         └── riisupa.js    Header, footer, filtros y formato de fechas.
 ```
 
-Menú: **Inicio · La Red · Universidades · Actividades**. El reglamento se accede desde "La Red", el pie de página y los links de cada página.
+Menú: **Inicio · La Red · Universidades · Actividades**.
+
+El reglamento **no se publica en el sitio**: es un documento de funcionamiento interno de la Red.
 
 ## Cómo editar el contenido
 
@@ -60,7 +60,7 @@ Origen de los datos actuales: planilla *Integrantes_Red_RIISUPA_oct.2026.xlsx* (
 - **Universidades**: 20 universidades (se sumaron Universidad de la Cuenca del Plata y Universidad ISALUD) con **sedes por provincia**.
 - **Contenido de ejemplo eliminado**: proyectos, investigadores, blog, convocatorias, eventos y descripciones de universidades que eran de muestra.
 - **Páginas eliminadas**: `proyectos.html`, `lineas_investigacion.html`, `convocatorias.html`, `blog.html`, `investigadores.html`, `mock_index.html` y la copia vieja de `js/`. Quedan en el historial de git si se quieren recuperar.
-- **Reglamento**: se quitaron dos recuadros y un botón que describían trámites por GitHub que no forman parte del reglamento. El texto de los artículos no se modificó.
+- **Reglamento**: se quitó del sitio (página, links y sitemap) porque es de uso interno.
 - **Fechas**: las fechas cargadas solo con día ya no se muestran corridas al día anterior.
 - **Logo** de la Red en el encabezado y el pie.
 
@@ -75,6 +75,7 @@ Para GitHub Pages: en **Settings → Pages**, "Deploy from a branch", branch `ma
 - **Contacto único**: `rediisupa@gmail.com` + LinkedIn (aprobado por Comisión de Comunicación).
 - **Integrantes**: se muestran nombre, cargo y universidad; no se publican correos personales.
 - **Comisiones ad hoc**: no se muestran activas.
+- **Reglamento**: de uso interno, no se publica.
 
 ## Licencia
 
