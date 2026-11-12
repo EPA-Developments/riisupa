@@ -9,8 +9,8 @@ En esta etapa el sitio funciona como **portal de visibilidad**: información gen
 ```
 riisupa/
 ├── index.html            Portada: presentación, nodos temáticos, calendario
-│                         compartido (efemérides e iniciativas institucionales)
-│                         y agenda (próximos eventos de la Red).
+│                         compartido (efemérides e iniciativas institucionales),
+│                         agenda (próximos eventos) y últimas actividades.
 ├── la_red.html           Quiénes somos, estructura institucional, Comité
 │                         Ejecutivo, Asamblea de Miembros (todos los integrantes,
 │                         agrupados por universidad) y contacto oficial.
@@ -50,6 +50,7 @@ Al editar `data.js`, todas las páginas se actualizan solas. Algunas reglas:
 - Las sedes se escriben con los mismos nombres de la lista `provincias` (por ejemplo `'Pcia. de Buenos Aires'`, `'CABA'`).
 - Si un texto lleva apóstrofo (D'Angelo), va entre comillas dobles: `"Silvia D'Angelo"`.
 - Las actividades de tipo `efemeride` o `iniciativa-institucional` aparecen en "Calendario compartido"; el resto, en "Próximos eventos de la Red". Cuando pasa la fecha, se mueven solas al archivo.
+- En la portada, el bloque "Últimas actividades" muestra las 3 actividades ya realizadas más recientes (aparece solo si hay alguna). Si una actividad tiene `linkVideo`, se marca "Con grabación" y en la página Actividades muestra el botón "Ver grabación".
 
 Origen de los datos actuales: planilla *Integrantes_Red_RIISUPA_oct.2026.xlsx* (solapas "Miembros web" y "Sedes") y documento *Web de RIISUPA*.
 
