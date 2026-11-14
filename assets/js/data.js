@@ -299,12 +299,39 @@ window.RIISUPA.provincias = [
      modalidad: 'virtual',                       // virtual | presencial | hibrido
      ubicacion: '',                              // opcional (presencial o híbrida)
      resumen: 'Breve descripción de la actividad.',
-     organizador: 'usal',                        // id de la universidad, o null si organiza la Red
+     organizador: 'usal',                        // id de la universidad, varias entre corchetes (['barcelo', 'uai']) o null si organiza la Red
+     coorganizan: '',                            // opcional: instituciones de fuera de la Red (p. ej. 'SAIC y CAECS')
      linkInscripcion: '',                        // opcional
+     linkVideo: '',                              // opcional: grabación (YouTube, LinkedIn, Google Drive...)
+     flyer: '',                                  // opcional: imagen en assets/img/actividades/
    },
    ======================================================================= */
 
-window.RIISUPA.eventos = [];
+window.RIISUPA.eventos = [
+  {
+    id: 'dia-investigador-cientifico-2026',
+    titulo: 'Día del Investigador Científico',
+    tipo: 'efemeride',
+    estado: 'programado',
+    fechaInicio: '2026-04-10',
+    resumen: 'El 10 de abril, en honor a Bernardo Houssay, se celebra el Día del Investigador Científico. Con la premisa de que la ciencia se construye en comunidad y de que la investigación es el fruto del deseo de transformar la realidad, las distintas universidades que conforman la Red nos unimos en este video colaborativo para reconocer la vocación y el esfuerzo de quienes, a través de su labor científica, contribuyen al progreso de nuestro país.',
+    organizador: null,
+    linkVideo: 'https://drive.google.com/file/d/108eJQUytZr_bWCkzytO-QD-tw17HPrgH/view?usp=sharing',
+  },
+  {
+    id: 'webinar-etica-investigacion-animales-2026',
+    titulo: '¿Quién cuida a quienes cuidan? Ética, protección e integridad en la investigación con animales',
+    tipo: 'webinar',
+    estado: 'programado',
+    fechaInicio: '2026-06-26T14:00:00-03:00',
+    duracionMinutos: 120,
+    modalidad: 'virtual',
+    resumen: 'Webinario organizado por universidades miembros de la Red, Fundación Barceló y UAI, en conjunto con SAIC y CAECS, sobre ética, protección e integridad en la investigación con animales.',
+    organizador: ['barcelo', 'uai'],
+    coorganizan: 'SAIC y CAECS',
+    flyer: 'assets/img/actividades/webinar-etica-animales-2026.jpg',
+  },
+];
 
 /* =======================================================================
    HELPERS (funciones utilitarias compartidas)
@@ -312,6 +339,10 @@ window.RIISUPA.eventos = [];
 
 window.RIISUPA.helpers = {
   getUniversidad: (id) => window.RIISUPA.universidades.find((u) => u.id === id),
+  /* Universidades organizadoras de una actividad (acepta un id o una lista de ids) */
+  organizadoresDe: (e) => [].concat(e.organizador || [])
+    .map((id) => window.RIISUPA.universidades.find((u) => u.id === id))
+    .filter(Boolean),
   integrantesDe: (id) => window.RIISUPA.integrantes.filter((i) => i.universidad === id),
   ordenProvincia: (p) => {
     const i = window.RIISUPA.provincias.indexOf(p);
