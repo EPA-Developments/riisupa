@@ -18,6 +18,7 @@ riisupa/
 │                         provincia, filtros y presencia federal.
 ├── eventos.html          Actividades: próximas y archivo.
 ├── robots.txt · sitemap.xml · favicon.svg
+├── despliegue/nginx/     Configuración de nginx para www.riisupa.org.
 └── assets/
     ├── css/riisupa.css   Todo el estilo: paleta, tipografía, componentes.
     ├── img/              Logo e isotipo de la Red (PNG con fondo transparente).
@@ -67,9 +68,30 @@ Origen de los datos actuales: planilla *Integrantes_Red_RIISUPA_oct.2026.xlsx* (
 
 ## Publicación
 
-El sitio es estático: cualquier hosting de archivos sirve (GitHub Pages, Netlify, el servidor de una universidad, etc.). `sitemap.xml` y `robots.txt` apuntan hoy a `https://riisupa.github.io/`; si el dominio final es otro, hay que actualizar esas dos URLs.
+El sitio se publica en **https://www.riisupa.org** (canónico); `riisupa.org` redirige a www. Lo sirve nginx en el servidor de EPA, con la configuración de `despliegue/nginx/www-riisupa`.
 
-Para GitHub Pages: en **Settings → Pages**, "Deploy from a branch", branch `main`, carpeta `/ (root)`.
+Primera vez (en el servidor):
+
+```bash
+sudo cp despliegue/nginx/www-riisupa /etc/nginx/sites-available/www-riisupa
+sudo ln -s /etc/nginx/sites-available/www-riisupa /etc/nginx/sites-enabled/
+sudo mkdir -p /var/www/riisupa.org
+sudo nginx -t && sudo systemctl reload nginx
+sudo certbot --nginx -d www.riisupa.org -d riisupa.org
+```
+
+Publicar o actualizar el contenido (rama `main`), sin los archivos del repositorio que no son del sitio:
+
+```bash
+git clone --depth 1 https://github.com/EPA-Developments/riisupa.git /tmp/riisupa
+sudo rsync -a --delete --exclude .git --exclude .well-known --exclude README.md --exclude LICENSE \
+  --exclude despliegue/ --exclude riisupa_github_org_structure.svg /tmp/riisupa/ /var/www/riisupa.org/
+rm -rf /tmp/riisupa
+```
+
+`sitemap.xml` y `robots.txt` ya apuntan a `https://www.riisupa.org/`.
+
+CSS y JS se revalidan en cada visita (`data.js` tiene todo el contenido), así que un cambio publicado se ve enseguida; imágenes y fuentes tienen caché de 30 días: si se reemplaza una imagen, conviene cambiarle el nombre.
 
 ## Decisiones editoriales vigentes
 

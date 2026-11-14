@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://riisupa.github.io/sitemap.xml
+Sitemap: https://www.riisupa.org/sitemap.xml
