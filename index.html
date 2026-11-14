@@ -101,6 +101,23 @@
       </div>
     </section>
 
+    <!-- ÚLTIMAS ACTIVIDADES (se muestra solo si hay actividades pasadas) -- -->
+    <section class="section" id="ultimas-actividades" hidden>
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Archivo</p>
+            <h2 class="display-md" style="margin-top: 0.75rem;">Últimas actividades</h2>
+          </div>
+          <a href="eventos.html#seccion-pasados" class="section-link">Ver todas las actividades →</a>
+        </div>
+        <p class="section-intro">
+          Actividades realizadas por la Red y por las universidades miembro.
+        </p>
+        <div id="ultimas-listado" style="display: flex; flex-direction: column; gap: 1rem;"></div>
+      </div>
+    </section>
+
   </main>
 
   <div data-slot="footer"></div>
@@ -127,7 +144,7 @@
     /* -----------------------------------------------------------
        Actividades: calendario compartido + agenda de la Red
        ----------------------------------------------------------- */
-    function tarjeta(e) {
+    function tarjeta(e, esPasado) {
       const f = RIISUPA_UI.partesFecha(e.fechaInicio);
       const organizador = e.organizador ? getUniversidad(e.organizador) : null;
       const esCalendario = CALENDARIO.includes(e.tipo);
@@ -135,7 +152,7 @@
       const cuando = dias <= 0 ? 'Hoy' : dias === 1 ? 'Mañana' : `en ${dias} días`;
       return `
         <a href="eventos.html#${e.id}" class="evento-card">
-          <div class="evento-fecha-block">
+          <div class="evento-fecha-block ${esPasado ? 'pasado' : ''}">
             <div class="evento-fecha-dia">${f.dia}</div>
             <div class="evento-fecha-mes">${f.mes}</div>
             <div class="evento-fecha-anio">${f.anio}</div>
@@ -143,7 +160,8 @@
           <div>
             <div class="evento-body-head">
               <span class="tag ${esCalendario && e.tipo === 'efemeride' ? 'tag-accent' : 'tag-primary'}">${RIISUPA.tipoEventoLabels[e.tipo] || e.tipo}</span>
-              ${!esCalendario ? `<span class="tag tag-accent">${cuando}</span>` : ''}
+              ${!esCalendario && !esPasado ? `<span class="tag tag-accent">${cuando}</span>` : ''}
+              ${esPasado && e.linkVideo ? '<span class="tag tag-accent">Con grabación</span>' : ''}
               ${e.modalidad ? `<span class="tag">${RIISUPA.modalidadLabels[e.modalidad] || e.modalidad}</span>` : ''}
               ${organizador ? `<span class="tag">Organiza: ${escapeHTML(organizador.sigla)}</span>` : ''}
             </div>
@@ -159,7 +177,7 @@
 
     function renderLista(id, eventos, vacio) {
       document.getElementById(id).innerHTML = eventos.length
-        ? eventos.map(tarjeta).join('')
+        ? eventos.map(e => tarjeta(e, false)).join('')
         : `<p class="lista-vacia">${vacio}</p>`;
     }
 
@@ -177,6 +195,16 @@
       proximos.filter(e => !CALENDARIO.includes(e.tipo)).slice(0, 4),
       `Por el momento no hay eventos programados. Seguinos en <a href="${RIISUPA.contacto.linkedin}" target="_blank" rel="noopener">LinkedIn</a> para enterarte de las próximas actividades.`
     );
+
+    /* Últimas actividades: las 3 más recientes ya realizadas */
+    const ultimas = RIISUPA.eventos
+      .filter(e => !RIISUPA_UI.esProximo(e, ahora) && e.estado !== 'cancelado')
+      .sort((a, b) => RIISUPA_UI.parseFecha(b.fechaInicio) - RIISUPA_UI.parseFecha(a.fechaInicio))
+      .slice(0, 3);
+    if (ultimas.length) {
+      document.getElementById('ultimas-listado').innerHTML = ultimas.map(e => tarjeta(e, true)).join('');
+      document.getElementById('ultimas-actividades').hidden = false;
+    }
 
     RIISUPA_UI.scrollToHash();
   </script>

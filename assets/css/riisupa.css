@@ -1127,7 +1127,14 @@ button, select, input, textarea {
   align-items: start;
 }
 
-.evento-card { scroll-margin-top: 5rem; }
+.evento-card,
+#seccion-pasados { scroll-margin-top: 5rem; }
+
+/* En escritorio los filtros de Actividades quedan fijos debajo del header */
+@media (min-width: 768px) {
+  .evento-card,
+  #seccion-pasados { scroll-margin-top: 12rem; }
+}
 
 .evento-card:hover {
   border-color: var(--primary-400);
