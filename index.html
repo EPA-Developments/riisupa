@@ -127,7 +127,7 @@
   <script>
     RIISUPA_UI.mount('inicio');
 
-    const { escapeHTML, getUniversidad } = RIISUPA.helpers;
+    const { escapeHTML, organizadoresDe } = RIISUPA.helpers;
     const ahora = new Date();
     const CALENDARIO = ['efemeride', 'iniciativa-institucional'];
 
@@ -146,7 +146,7 @@
        ----------------------------------------------------------- */
     function tarjeta(e, esPasado) {
       const f = RIISUPA_UI.partesFecha(e.fechaInicio);
-      const organizador = e.organizador ? getUniversidad(e.organizador) : null;
+      const organizadores = organizadoresDe(e).map(u => u.sigla).join(' · ');
       const esCalendario = CALENDARIO.includes(e.tipo);
       const dias = RIISUPA_UI.diasHasta(e.fechaInicio);
       const cuando = dias <= 0 ? 'Hoy' : dias === 1 ? 'Mañana' : `en ${dias} días`;
@@ -163,7 +163,7 @@
               ${!esCalendario && !esPasado ? `<span class="tag tag-accent">${cuando}</span>` : ''}
               ${esPasado && e.linkVideo ? '<span class="tag tag-accent">Con grabación</span>' : ''}
               ${e.modalidad ? `<span class="tag">${RIISUPA.modalidadLabels[e.modalidad] || e.modalidad}</span>` : ''}
-              ${organizador ? `<span class="tag">Organiza: ${escapeHTML(organizador.sigla)}</span>` : ''}
+              ${organizadores ? `<span class="tag">Organiza: ${escapeHTML(organizadores)}</span>` : ''}
             </div>
             <h3 class="evento-titulo">${escapeHTML(e.titulo)}</h3>
             ${e.resumen ? `<p class="evento-resumen">${escapeHTML(e.resumen)}</p>` : ''}

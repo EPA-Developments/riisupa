@@ -42,7 +42,7 @@ El reglamento **no se publica en el sitio**: es un documento de funcionamiento i
 | `RIISUPA.universidades` | 20 universidades: nombre, sigla, sitio web y sedes (provincias) | "Universidades", "La Red" |
 | `RIISUPA.integrantes` | 28 integrantes de la Asamblea: nombre, cargo y universidad | "La Red" |
 | `RIISUPA.provincias` | Orden en que se listan las provincias | "Universidades" |
-| `RIISUPA.eventos` | Actividades (vacía por ahora; tiene una plantilla comentada) | Portada, "Actividades" |
+| `RIISUPA.eventos` | Actividades (con plantilla comentada para cargar nuevas). Flyers en `assets/img/actividades/` | Portada, "Actividades" |
 
 Al editar `data.js`, todas las páginas se actualizan solas. Algunas reglas:
 

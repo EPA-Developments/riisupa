@@ -1227,6 +1227,13 @@ button, select, input, textarea {
   align-items: center;
 }
 
+/* En la página Actividades el resumen se muestra completo */
+.evento-resumen.completo {
+  display: block;
+  -webkit-line-clamp: unset;
+  overflow: visible;
+}
+
 .evento-meta-item {
   display: flex;
   align-items: center;

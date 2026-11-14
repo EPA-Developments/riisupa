@@ -93,7 +93,7 @@
   <script>
     RIISUPA_UI.mount('eventos');
 
-    const { escapeHTML, normalize, getUniversidad } = RIISUPA.helpers;
+    const { escapeHTML, normalize, organizadoresDe } = RIISUPA.helpers;
     const eventos = [...RIISUPA.eventos];
     const ahora = new Date();
     const linkStyle = 'font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--primary-800);';
@@ -113,7 +113,7 @@
 
     function renderEvento(e, esPasado) {
       const f = RIISUPA_UI.partesFecha(e.fechaInicio);
-      const organizador = e.organizador ? getUniversidad(e.organizador) : null;
+      const organizadores = organizadoresDe(e).map(u => u.sigla).join(' · ');
 
       let badgeDias = '';
       if (!esPasado) {
@@ -125,6 +125,7 @@
       const acciones = [];
       if (!esPasado && e.linkInscripcion) acciones.push(`<a href="${e.linkInscripcion}" target="_blank" rel="noopener" style="${linkStyle}">Inscribirse ↗</a>`);
       if (esPasado && e.linkVideo) acciones.push(`<a href="${e.linkVideo}" target="_blank" rel="noopener" style="${linkStyle}">Ver grabación ↗</a>`);
+      if (e.flyer) acciones.push(`<a href="${e.flyer}" target="_blank" rel="noopener" style="${linkStyle}">Ver flyer ↗</a>`);
       if (esPasado && e.linkMateriales) acciones.push(`<a href="${e.linkMateriales}" target="_blank" rel="noopener" style="${linkStyle}">Materiales ↗</a>`);
 
       return `
@@ -142,12 +143,12 @@
               ${badgeDias}
             </div>
             <h3 class="evento-titulo">${escapeHTML(e.titulo)}</h3>
-            ${e.resumen ? `<p class="evento-resumen">${escapeHTML(e.resumen)}</p>` : ''}
+            ${e.resumen ? `<p class="evento-resumen completo">${escapeHTML(e.resumen)}</p>` : ''}
             <div class="evento-meta">
               <span class="evento-meta-item">${RIISUPA_UI.formatoFechaHora(e.fechaInicio)}</span>
               ${e.duracionMinutos ? `<span class="evento-meta-item">${e.duracionMinutos} minutos</span>` : ''}
               ${e.ubicacion ? `<span class="evento-meta-item">${escapeHTML(e.ubicacion)}</span>` : ''}
-              ${organizador ? `<span class="evento-meta-item">Organiza: ${escapeHTML(organizador.sigla)}</span>` : ''}
+              ${organizadores ? `<span class="evento-meta-item">Organiza: ${escapeHTML(organizadores)}${e.coorganizan ? ' junto con ' + escapeHTML(e.coorganizan) : ''}</span>` : ''}
               ${acciones.length ? `<span style="margin-left: auto;">${acciones.join(' · ')}</span>` : ''}
             </div>
           </div>
@@ -167,14 +168,16 @@
       });
     }
 
-    function renderAll(filtrados) {
+    function renderAll(filtrados, hayFiltros) {
       const porFecha = (a, b) => RIISUPA_UI.parseFecha(a.fechaInicio) - RIISUPA_UI.parseFecha(b.fechaInicio);
       const proximos = filtrados.filter(e => RIISUPA_UI.esProximo(e, ahora)).sort(porFecha);
       const pasados = filtrados.filter(e => !RIISUPA_UI.esProximo(e, ahora) && e.estado !== 'cancelado').sort((a, b) => porFecha(b, a));
 
       const vacio = eventos.length === 0
         ? 'Todavía no hay actividades publicadas. Muy pronto vas a encontrar acá la agenda de la Red.'
-        : 'No hay actividades próximas que coincidan con la búsqueda.';
+        : hayFiltros
+          ? 'No hay actividades próximas que coincidan con la búsqueda.'
+          : `Por el momento no hay actividades programadas. Seguinos en <a href="${RIISUPA.contacto.linkedin}" target="_blank" rel="noopener">LinkedIn</a> para enterarte de las próximas.`;
       document.getElementById('resultados-proximos').innerHTML = proximos.length
         ? proximos.map(e => renderEvento(e, false)).join('')
         : `<p class="lista-vacia">${vacio}</p>`;
@@ -194,7 +197,7 @@
     function aplicar() {
       const state = {};
       selects.forEach(el => { state[el.name] = el.value; });
-      renderAll(filtrar(eventos, state));
+      renderAll(filtrar(eventos, state), Object.values(state).some(Boolean));
     }
     selects.forEach(el => el.addEventListener('input', aplicar));
     document.getElementById('reset-filtros').addEventListener('click', () => {
