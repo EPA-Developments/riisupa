@@ -1,0 +1,89 @@
+# Sitio de la Red RIISUPA: www.riisupa.org (canónico) y riisupa.org.
+# Va en /etc/nginx/sites-available/www-riisupa, con symlink en sites-enabled/.
+#
+# Está escrito «antes de Certbot», igual que www-epa-bienestar: solo escucha
+# en el 80. Al correr
+#     certbot --nginx -d www.riisupa.org -d riisupa.org
+# Certbot agrega a cada bloque el `listen 443 ssl` y los certificados, y crea
+# los bloques del 80 que redirigen a HTTPS. No hace falta tocar nada después.
+#
+# El contenido (HTML estático del repo EPA-Developments/riisupa, rama main) se
+# publica en /var/www/riisupa.org, sin .git, README.md, LICENSE, el diagrama
+# interno .svg ni esta carpeta despliegue/ (igual se bloquean abajo).
+
+# Marca «www»: el sitio en sí.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name www.riisupa.org;
+
+    root /var/www/riisupa.org;
+    index index.html;
+    charset utf-8;
+    absolute_redirect off;   # redirecciones internas relativas: conservan https
+
+    # Nada de .git, .env, .htaccess ni respaldos.
+    # Se deja pasar /.well-known/, que Certbot necesita para renovar.
+    location ~ /\.(?!well-known/) { return 404; }
+    location ~ \.(bak|bak_[A-Za-z0-9]+|orig|swp|old|tar\.gz|zip)$ { return 404; }
+
+    # Archivos del repositorio que no son parte del sitio.
+    location ~* ^/(README\.md|LICENSE|riisupa_github_org_structure\.svg)$ { return 404; }
+    location ^~ /despliegue/ { return 404; }
+
+    # El reglamento es de uso interno y no se publica; tampoco las páginas
+    # de la maqueta anterior. Si quedó algún link viejo, que no exista.
+    location ~ ^/(reglamento|proyectos|lineas_investigacion|convocatorias|blog|investigadores|mock_index)(\.html)?/?$ {
+        return 404;
+    }
+
+    # El sitio es estático: no hay PHP.
+    location ~ \.php$ { return 404; }
+
+    # CSS y JS: se revalidan en cada visita (304 si no cambiaron). data.js tiene
+    # todo el contenido (integrantes, actividades): con caché larga, un cambio
+    # tardaría semanas en verse. Se usa `expires` y no `add_header`: un
+    # add_header dentro de un location anula los encabezados de seguridad del server.
+    location ~* \.(?:css|js)$ {
+        try_files $uri =404;
+        expires -1;
+    }
+
+    # Imágenes y fuentes: caché larga en el navegador.
+    location ~* \.(?:png|jpe?g|gif|webp|avif|svg|ico|woff2?|ttf|eot)$ {
+        try_files $uri =404;
+        expires 30d;
+        access_log off;
+    }
+
+    # Páginas: con o sin .html (/la_red y /la_red.html sirven lo mismo).
+    location / {
+        try_files $uri $uri.html $uri/ =404;
+        expires -1;
+    }
+
+    gzip on;
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/css application/javascript application/json image/svg+xml text/plain text/xml;
+
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header Referrer-Policy "strict-origin-when-cross-origin" always;
+    add_header X-Frame-Options "SAMEORIGIN" always;
+}
+
+# Dominio sin www: todo a www, salvo el desafío de Let's Encrypt.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name riisupa.org;
+
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/riisupa.org;
+        default_type text/plain;
+    }
+
+    location / {
+        return 301 https://www.riisupa.org$request_uri;
+    }
+}
