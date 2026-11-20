@@ -18,7 +18,8 @@ riisupa/
 │                         provincia, filtros y presencia federal.
 ├── eventos.html          Actividades: próximas y archivo.
 ├── robots.txt · sitemap.xml · favicon.svg
-├── despliegue/nginx/     Configuración de nginx para www.riisupa.org.
+├── despliegue/          Configuración de nginx y script de verificación
+│                         del sitio publicado (www.riisupa.org).
 └── assets/
     ├── css/riisupa.css   Todo el estilo: paleta, tipografía, componentes.
     ├── img/              Logo e isotipo de la Red (PNG con fondo transparente).
@@ -90,6 +91,12 @@ rm -rf /tmp/riisupa
 ```
 
 `sitemap.xml` y `robots.txt` ya apuntan a `https://www.riisupa.org/`.
+
+Para verificar que todo quedó bien (DNS, certificado, redirecciones, páginas, lo que no debe verse, encabezados y, en el servidor, nginx y la renovación de Certbot):
+
+```bash
+sudo bash despliegue/verificar-sitio.sh
+```
 
 CSS y JS se revalidan en cada visita (`data.js` tiene todo el contenido), así que un cambio publicado se ve enseguida; imágenes y fuentes tienen caché de 30 días: si se reemplaza una imagen, conviene cambiarle el nombre.
 
